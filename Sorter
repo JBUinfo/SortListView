@@ -1,0 +1,23 @@
+namespace yourNamespace{
+  class yourClass {
+      private void listView1_ColumnClick(object sender, ColumnClickEventArgs e) {
+          listView1.Sorting = (listView1.Sorting == SortOrder.Ascending) ? SortOrder.Descending : SortOrder.Ascending;
+          listView1.Sort();
+          listView1.ListViewItemSorter = new ListViewItemComparer(e.Column, listView1.Sorting);
+      }
+  }
+
+  class ListViewItemComparer : IComparer {
+    private int col;
+    private SortOrder order;
+    public ListViewItemComparer(int column, SortOrder order) {
+        col = column;
+        this.order = order;
+    }
+    public int Compare(object x, object y) {
+        int returnVal = String.Compare(((ListViewItem)x).SubItems[col].Text, ((ListViewItem)y).SubItems[col].Text);
+        returnVal *= order == SortOrder.Descending ? -1 : 1;
+        return returnVal;
+    }
+  }
+}
